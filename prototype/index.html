@@ -1,0 +1,501 @@
+<title>Save7OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F4F8F9; --surface:#FFFFFF; --surface-2:#EAF1F2; --fog:#D7E1E4;
+    --ink:#0B1622; --ink-dim:#5B7580; --line:rgba(11,22,34,.12);
+    --teal:#00A79E; --teal-ink:#006963; --pink:#ED186B;
+    --good:#218F55; --warn:#A6721A; --bad:#C9432E;
+    --shadow: 0 1px 2px rgba(11,22,34,.06), 0 8px 24px -12px rgba(11,22,34,.15);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A141E; --surface:#122130; --surface-2:#1A2C3B; --fog:#233A4B;
+      --ink:#EAF3F4; --ink-dim:#8FA7B1; --line:rgba(234,243,244,.12);
+      --teal:#2FD8CF; --teal-ink:#8CF2EA; --pink:#FF4C90;
+      --good:#43C784; --warn:#E7B94E; --bad:#E4694C;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A141E; --surface:#122130; --surface-2:#1A2C3B; --fog:#233A4B;
+    --ink:#EAF3F4; --ink-dim:#8FA7B1; --line:rgba(234,243,244,.12);
+    --teal:#2FD8CF; --teal-ink:#8CF2EA; --pink:#FF4C90;
+    --good:#43C784; --warn:#E7B94E; --bad:#E4694C;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    padding-inline:20px; padding-block:28px 60px;
+  }
+  .wrap{max-width:1080px; margin:0 auto;}
+  h1,h2,h3{font-family:"Big Shoulders",system-ui,sans-serif; text-transform:uppercase; text-wrap:balance; margin:0; letter-spacing:.01em;}
+  .mono{font-family:"IBM Plex Mono",monospace;}
+  a{color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+  button:focus-visible, a:focus-visible, select:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid var(--pink); outline-offset:2px;
+  }
+  [hidden]{display:none!important;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms!important; transition-duration:.001ms!important;} }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:16px;
+    flex-wrap:wrap; padding-bottom:18px; border-bottom:1px solid var(--line); margin-bottom:28px;
+  }
+  .wordmark{display:flex; align-items:baseline; gap:2px; font-size:clamp(30px,5vw,42px); font-weight:900; line-height:1;}
+  .wordmark .save{color:var(--teal);} .wordmark .seven{color:var(--pink);}
+  .tagline{font-size:13px; color:var(--ink-dim); margin-top:4px; letter-spacing:.03em;}
+  .buildmeter{text-align:right; font-size:12px; color:var(--ink-dim);}
+  .buildmeter .mono{font-size:20px; color:var(--ink); display:block;}
+  .buildbar{width:180px; height:6px; border-radius:4px; background:var(--fog); overflow:hidden; margin-top:6px; margin-left:auto;}
+  .buildbar > i{display:block; height:100%; background:linear-gradient(90deg,var(--teal),var(--pink)); width:22%;}
+
+  /* ---------- landing ---------- */
+  .hero{margin-bottom:36px;}
+  .hero h1{font-size:clamp(30px,4.6vw,46px);}
+  .hero p{max-width:60ch; color:var(--ink-dim); font-size:16px; margin-top:10px;}
+
+  .doors{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin-top:24px;}
+  .door{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px; text-align:left; box-shadow:var(--shadow); position:relative; overflow:hidden;
+    display:flex; flex-direction:column; gap:6px; transition:transform .15s ease;
+  }
+  .door:hover{transform:translateY(-2px);}
+  .door::before{content:""; position:absolute; inset:0 auto 0 0; width:5px; background:var(--door-color,var(--teal));}
+  .door .role-tag{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--door-color,var(--teal)); font-weight:600;}
+  .door h3{font-size:22px;}
+  .door span.desc{font-size:14px; color:var(--ink-dim); font-weight:400; font-family:"IBM Plex Sans";}
+
+  .staffline{margin-top:18px; font-size:13px; color:var(--ink-dim);}
+  .staffline button{background:none; border:none; color:var(--ink); text-decoration:underline; padding:0; font-size:13px;}
+
+  /* ---------- map / fog tiles ---------- */
+  .mapzone{margin-top:40px;}
+  .mapzone .zone-head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
+  .mapzone .zone-head p{font-size:13px; color:var(--ink-dim); margin:0; max-width:52ch;}
+  .hubgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px;}
+  .hub{
+    border-radius:var(--radius); padding:16px; border:1px solid var(--line); position:relative;
+    min-height:118px; display:flex; flex-direction:column; justify-content:space-between; text-align:left;
+    background:var(--surface-2); color:var(--ink-dim); overflow:hidden;
+  }
+  .hub.scouted{background:linear-gradient(160deg,var(--surface),var(--surface-2)); color:var(--ink); box-shadow:var(--shadow);}
+  .hub .hub-name{font-family:"Big Shoulders"; text-transform:uppercase; font-size:18px; color:inherit;}
+  .hub .hub-state{font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:600; font-family:"IBM Plex Mono";}
+  .hub.fogged .hub-state{color:var(--ink-dim);}
+  .hub.scouted .hub-state{color:var(--teal-ink);}
+  .hub::after{ /* mist texture */
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 6px, transparent 6px 14px);
+    opacity:0;
+  }
+  .hub.fogged::after{opacity:1;}
+  .hub .future{font-size:11px; margin-top:8px; font-family:"IBM Plex Mono";}
+  .hub button.hubbtn{
+    position:absolute; inset:0; background:none; border:none; padding:0; margin:0;
+  }
+  .hubdetail{
+    margin-top:14px; border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px;
+    background:var(--surface); font-size:14px; box-shadow:var(--shadow);
+  }
+  .hubdetail h4{font-family:"Big Shoulders"; text-transform:uppercase; font-size:16px; margin-bottom:6px;}
+  .hubdetail p{margin:0; color:var(--ink-dim);}
+
+  /* ---------- legend ---------- */
+  .legend{display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; font-size:12px; color:var(--ink-dim);}
+  .legend .dot{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:-1px;}
+  .legend .fog-dot{background:var(--fog); border:1px solid var(--ink-dim);}
+  .legend .scout-dot{background:var(--teal);}
+  .legend .explored-dot{background:var(--pink);}
+
+  /* ---------- signin panel ---------- */
+  .signin{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px; max-width:420px; box-shadow:var(--shadow); margin-top:24px;
+  }
+  .signin h3{font-size:20px; margin-bottom:8px;}
+  .signin p{font-size:14px; color:var(--ink-dim); margin:0 0 16px;}
+  .signin label{display:block; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin-bottom:4px;}
+  .signin input{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--surface-2);
+    color:var(--ink); font-family:inherit; font-size:14px; margin-bottom:14px;
+  }
+  .btn{
+    background:var(--teal); color:#04201D; border:none; border-radius:8px; padding:10px 18px;
+    font-weight:600; font-size:14px; letter-spacing:.01em;
+  }
+  .btn.secondary{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn.pink{background:var(--pink); color:#2A0413;}
+  .backlink{background:none; border:none; color:var(--ink-dim); font-size:13px; text-decoration:underline; margin-bottom:18px;}
+
+  /* ---------- dashboard ---------- */
+  .dash-head{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:22px;}
+  .dash-head .who{font-size:12px; color:var(--ink-dim);}
+  .dash-head .who .mono{color:var(--ink); font-size:14px;}
+  .branchpicker{display:flex; align-items:center; gap:8px; font-size:13px;}
+  .branchpicker select{
+    font-family:inherit; padding:8px 10px; border-radius:8px; border:1px solid var(--line); background:var(--surface);
+    color:var(--ink); font-size:13px;
+  }
+  .viewbanner{
+    padding:10px 14px; border-radius:10px; font-size:13px; margin-bottom:18px; display:flex; align-items:center; gap:8px;
+  }
+  .viewbanner.own{background:color-mix(in srgb, var(--teal) 16%, var(--surface)); color:var(--teal-ink);}
+  .viewbanner.readonly{background:color-mix(in srgb, var(--pink) 14%, var(--surface)); color:var(--pink);}
+
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin-bottom:26px;}
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px;
+    box-shadow:var(--shadow); display:flex; flex-direction:column; gap:8px;
+  }
+  .card.dark{background:linear-gradient(160deg,#0F2A3B,#0A1D28); color:#DCEEF0; border-color:transparent;}
+  .card.dark .card-sub{color:#9FC3C9;}
+  .card h4{font-family:"Big Shoulders"; text-transform:uppercase; font-size:17px;}
+  .card .card-sub{font-size:13px; color:var(--ink-dim);}
+  .card ul{margin:4px 0 0; padding-left:0; list-style:none; font-size:13px; display:flex; flex-direction:column; gap:6px;}
+  .card li{padding-left:14px; position:relative; color:var(--ink-dim);}
+  .card li::before{content:"–"; position:absolute; left:0; color:var(--ink-dim);}
+
+  .pill{
+    display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; letter-spacing:.03em;
+    padding:3px 9px; border-radius:999px; text-transform:uppercase; font-family:"IBM Plex Mono";
+  }
+  .pill.good{background:color-mix(in srgb, var(--good) 18%, transparent); color:var(--good);}
+  .pill.warn{background:color-mix(in srgb, var(--warn) 18%, transparent); color:var(--warn);}
+  .pill.bad{background:color-mix(in srgb, var(--bad) 18%, transparent); color:var(--bad);}
+  .pill.ice{background:var(--fog); color:var(--ink-dim);}
+
+  .okrblock{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .okrblock .pillar{
+    flex:1 1 120px; background:var(--surface-2); border:1px dashed var(--line); border-radius:10px;
+    padding:10px; font-size:12px; color:var(--ink-dim); text-align:center;
+  }
+
+  table.validate{width:100%; border-collapse:collapse; font-size:13px; margin-top:4px;}
+  table.validate th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-dim); font-weight:600; padding-bottom:6px; border-bottom:1px solid var(--line);}
+  table.validate td{padding:8px 0; border-bottom:1px solid var(--line); vertical-align:middle;}
+  table.validate td.actions{text-align:right; white-space:nowrap;}
+  table.validate .btn{padding:5px 10px; font-size:12px;}
+
+  .row-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;}
+
+  footer.note{
+    margin-top:44px; padding-top:18px; border-top:1px solid var(--line); font-size:12px; color:var(--ink-dim);
+    display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+
+  @media (max-width:520px){
+    .topbar{align-items:flex-start;}
+    .buildmeter{text-align:left;} .buildbar{margin-left:0;}
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div>
+      <div class="wordmark"><span class="save">SAVE</span><span class="seven">7</span><span style="font-size:.5em; margin-left:8px; color:var(--ink-dim); font-weight:600; letter-spacing:.08em;">OS</span></div>
+      <div class="tagline">operations command deck — national · branch · volunteer</div>
+    </div>
+    <div class="buildmeter">
+      <span class="mono" id="buildcount">2 / 8</span>systems mapped
+      <div class="buildbar"><i id="buildfill"></i></div>
+    </div>
+  </div>
+
+  <!-- ================= LANDING ================= -->
+  <section id="screen-landing">
+    <div class="hero">
+      <h1>Welcome.</h1>
+      <p>This is the whole map before you sign in — most of it is still fog. Pick your door below and the parts built for your role will come into view. Everything else stays marked, not hidden.</p>
+    </div>
+
+    <div class="doors">
+      <button class="door" style="--door-color:var(--teal)" onclick="startSignin('branch_manager')">
+        <span class="role-tag">Branch Manager</span>
+        <h3>Run your branch</h3>
+        <span class="desc">OKRs, finances, compliance and volunteers for your chapter — plus a read-only look at every other branch.</span>
+      </button>
+      <button class="door" style="--door-color:#3D8FD9" onclick="startSignin('ops_manager')">
+        <span class="role-tag">Operations Manager</span>
+        <h3>Coordinate delivery</h3>
+        <span class="desc">Run your branch's operations team, validate incoming volunteers, keep tasks moving.</span>
+      </button>
+      <button class="door" style="--door-color:var(--pink)" onclick="startSignin('volunteer')">
+        <span class="role-tag">Volunteer</span>
+        <h3>Show up &amp; make impact</h3>
+        <span class="desc">Sign up, get matched to opportunities that fit your time, track what you've contributed.</span>
+      </button>
+    </div>
+
+    <p class="staffline">National Exco, Advisory Board or Admin? <button onclick="startSignin('national_exco')">Sign in here</button> — these accounts are set up directly, no public sign-up.</p>
+
+    <div class="mapzone">
+      <div class="zone-head">
+        <h2 style="font-size:22px;">The map so far</h2>
+        <p>Six hubs sit behind the door. Right now most are still fog — queued, not built. This previews what's coming and who it's for, without pretending it's live.</p>
+      </div>
+      <div class="hubgrid" id="hubgrid-preview"></div>
+      <div class="legend">
+        <span><span class="dot fog-dot"></span>fogged — not yet built</span>
+        <span><span class="dot scout-dot"></span>scouted — structure visible, content locked</span>
+        <span><span class="dot explored-dot"></span>explored — live once you're signed in with access</span>
+      </div>
+      <div id="hubdetail-preview"></div>
+    </div>
+  </section>
+
+  <!-- ================= SIGN IN ================= -->
+  <section id="screen-signin" hidden>
+    <button class="backlink" onclick="goLanding()">&larr; back to the map</button>
+    <div class="signin">
+      <h3 id="signin-title">Continue as Volunteer</h3>
+      <p id="signin-copy">Prototype sign-in — no password checked, this just previews what that role would see.</p>
+      <label for="signin-name">Name (demo)</label>
+      <input id="signin-name" type="text" placeholder="e.g. Thandiwe N.">
+      <div id="signin-branchfield" hidden style="margin-top:-6px;">
+        <label for="signin-branch">Home branch</label>
+        <select id="signin-branch">
+          <option>UCT</option>
+          <option>Stellenbosch</option>
+          <option>Wits</option>
+        </select>
+      </div>
+      <button class="btn" onclick="enterDashboard()">Continue &rarr;</button>
+    </div>
+  </section>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section id="screen-dash" hidden>
+    <div class="dash-head">
+      <div>
+        <h1 id="dash-heading" style="font-size:28px;">Dashboard</h1>
+        <div class="who">signed in as <span class="mono" id="dash-who">—</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <div class="branchpicker" id="branchpicker" hidden>
+          <span>Viewing</span>
+          <select id="viewbranch" onchange="changeViewBranch()"></select>
+        </div>
+        <button class="btn secondary" onclick="goLanding()">Sign out</button>
+      </div>
+    </div>
+
+    <div id="viewbanner"></div>
+    <div id="dash-body"></div>
+
+    <div class="mapzone" id="dash-hubzone">
+      <div class="zone-head">
+        <h2 style="font-size:20px;">Hubs</h2>
+        <p>Draft access shown — confirm the exact matrix with Exco before this gets built for real.</p>
+      </div>
+      <div class="hubgrid" id="hubgrid-dash"></div>
+      <div id="hubdetail-dash"></div>
+    </div>
+  </section>
+
+  <footer class="note">
+    <span>Prototype — structure &amp; role logic only. No accounts, no live data.</span>
+    <span class="mono">save7os · draft v0.1</span>
+  </footer>
+</div>
+
+<script>
+  var BRANCHES = ["UCT","Stellenbosch","Wits"];
+
+  var HUBS = [
+    {id:"okrs", name:"Save7 OKRs", state:"scouted",
+      blurb:"Mission &amp; strategy from Exco, pillars, branch objectives and key results.",
+      access:["branch_manager","ops_manager","national_exco","advisory_board","admin"]},
+    {id:"finance", name:"Finance Hub", state:"fogged",
+      blurb:"Budgets, reimbursements, branch financial health.",
+      access:["branch_manager","national_exco","admin"]},
+    {id:"compliance", name:"Compliance Hub", state:"fogged",
+      blurb:"Policy, risk register, audit trail.",
+      access:["national_exco","advisory_board","admin"]},
+    {id:"media", name:"Media Hub", state:"fogged",
+      blurb:"Brand assets, campaigns, press &amp; comms.",
+      access:["branch_manager","ops_manager","national_exco","admin"]},
+    {id:"operations", name:"Operations Hub", state:"fogged",
+      blurb:"Cross-branch operations coordination.",
+      access:["ops_manager","national_exco","admin"]},
+    {id:"branch", name:"Branch Managers Hub", state:"fogged",
+      blurb:"Branch-level performance, teams &amp; management.",
+      access:["branch_manager","national_exco","admin"]}
+  ];
+
+  var ROLE_LABEL = {
+    branch_manager:"Branch Manager", ops_manager:"Operations Manager",
+    volunteer:"Volunteer", national_exco:"National Exco"
+  };
+
+  var state = { pendingRole:null, role:null, name:"", homeBranch:"UCT", viewBranch:"UCT" };
+
+  function el(id){ return document.getElementById(id); }
+  function show(id){ el(id).hidden = false; }
+  function hide(id){ el(id).hidden = true; }
+
+  function renderHub(h, forRole){
+    var accessible = !forRole || h.access.indexOf(forRole) !== -1;
+    var cls = h.state === "scouted" ? "hub scouted" : "hub fogged";
+    var stateLabel = h.state === "scouted" ? "Scouted" : "Fogged — queued";
+    var futureLine = forRole
+      ? (accessible ? "Will unlock for you" : "Not part of your role yet")
+      : "Future access: " + h.access.map(function(r){return ROLE_LABEL[r]||r;}).join(", ");
+    return '<div class="'+cls+'">' +
+      '<div><div class="hub-name">'+h.name+'</div><div class="hub-state">'+stateLabel+'</div></div>' +
+      '<div class="future">'+futureLine+'</div>' +
+      '<button class="hubbtn" aria-label="'+h.name+' details" onclick="showHubDetail(\''+h.id+'\', this)"></button>' +
+      '</div>';
+  }
+
+  function paintHubGrid(gridId, forRole){
+    el(gridId).innerHTML = HUBS.map(function(h){ return renderHub(h, forRole); }).join("");
+  }
+
+  function showHubDetail(id, btn){
+    var h = HUBS.filter(function(x){return x.id===id;})[0];
+    var target = btn.closest("section").id === "screen-landing" ? "hubdetail-preview" : "hubdetail-dash";
+    el(target).innerHTML = '<div class="hubdetail"><h4>'+h.name+'</h4><p>'+h.blurb+'</p></div>';
+  }
+
+  function startSignin(role){
+    state.pendingRole = role;
+    hide("screen-landing"); show("screen-signin");
+    el("signin-title").textContent = "Continue as " + ROLE_LABEL[role];
+    var branchNeeded = role === "branch_manager" || role === "ops_manager";
+    el("signin-branchfield").hidden = !branchNeeded;
+    el("signin-copy").textContent = role === "volunteer"
+      ? "Prototype sign-in — real volunteers create this account after finishing the learn.save7.org course."
+      : "Prototype sign-in — no password checked, this just previews what that role would see.";
+  }
+
+  function goLanding(){
+    hide("screen-signin"); hide("screen-dash"); show("screen-landing");
+    el("signin-name").value = "";
+  }
+
+  function enterDashboard(){
+    var role = state.pendingRole;
+    state.role = role;
+    state.name = el("signin-name").value.trim() || "Demo " + ROLE_LABEL[role];
+    state.homeBranch = el("signin-branch").value || "UCT";
+    state.viewBranch = state.homeBranch;
+
+    hide("screen-signin"); show("screen-dash");
+    el("dash-who").textContent = state.name + " · " + ROLE_LABEL[role];
+    el("dash-heading").textContent = role === "volunteer" ? "Volunteer Dashboard" : ROLE_LABEL[role] + " Dashboard";
+
+    var picker = el("branchpicker");
+    if(role === "branch_manager" || role === "ops_manager"){
+      show("branchpicker");
+      var sel = el("viewbranch");
+      sel.innerHTML = BRANCHES.map(function(b){return '<option value="'+b+'">'+b+(b===state.homeBranch?" (yours)":"")+'</option>';}).join("");
+      sel.value = state.homeBranch;
+    } else {
+      hide("branchpicker");
+    }
+
+    renderDashBody();
+
+    if(role === "volunteer"){
+      hide("dash-hubzone");
+    } else {
+      show("dash-hubzone");
+      paintHubGrid("hubgrid-dash", role);
+      el("hubdetail-dash").innerHTML = "";
+    }
+  }
+
+  function changeViewBranch(){
+    state.viewBranch = el("viewbranch").value;
+    renderDashBody();
+  }
+
+  function renderDashBody(){
+    var banner = el("viewbanner");
+    var body = el("dash-body");
+
+    if(state.role === "volunteer"){
+      banner.innerHTML = "";
+      body.innerHTML = volunteerBody();
+      return;
+    }
+
+    var own = state.viewBranch === state.homeBranch || state.role === "national_exco";
+    if(state.role === "national_exco"){
+      banner.innerHTML = '<div class="viewbanner own">National view — Exco sees every branch, edit rights apply org-wide.</div>';
+    } else if(own){
+      banner.innerHTML = '<div class="viewbanner own">Viewing '+state.viewBranch+' — your branch. Full edit access.</div>';
+    } else {
+      banner.innerHTML = '<div class="viewbanner readonly">Viewing '+state.viewBranch+' — read-only. You can only edit '+state.homeBranch+'.</div>';
+    }
+    body.innerHTML = staffBody(own);
+  }
+
+  function volunteerBody(){
+    return '' +
+    '<div class="card" style="margin-bottom:14px; background:linear-gradient(160deg,#0F2A3B,#0A1D28); color:#DCEEF0; border:none;">' +
+      '<span class="pill warn" style="align-self:flex-start;">awaiting validation</span>' +
+      '<h4 style="color:#fff;">Certificate: Level 2 — submitted</h4>' +
+      '<span class="card-sub" style="color:#9FC3C9;">Sent to Stellenbosch Operations for sign-off. You can keep browsing opportunities while you wait.</span>' +
+    '</div>' +
+    '<div class="cards">' +
+      '<div class="card"><h4>Next best opportunity</h4><span class="card-sub">Matched to your skills, location &amp; time</span>' +
+        '<ul><li>15-minute, high-impact actions</li><li>2-hour volunteering slots</li></ul></div>' +
+      '<div class="card"><h4>My commitments</h4><span class="card-sub">Calendar &amp; scheduling</span>' +
+        '<ul><li>Upcoming shifts &amp; events</li><li>Reminders via Slack</li></ul></div>' +
+      '<div class="card"><h4>Impact tracker</h4><span class="card-sub">Your contribution, growing</span>' +
+        '<ul><li>18 hours contributed</li><li>3 projects helped</li></ul></div>' +
+      '<div class="card"><h4>Community</h4><span class="card-sub">Stay connected</span>' +
+        '<ul><li>Forum &amp; updates</li><li>Mentor contact</li></ul></div>' +
+      '<div class="card"><h4>Resources</h4><span class="card-sub">Learn &amp; prepare</span>' +
+        '<ul><li>Courses &amp; guides</li><li>Newsletter</li></ul></div>' +
+      '<div class="card"><h4>Apply for a project</h4><span class="card-sub">Ready for bigger work</span>' +
+        '<ul><li>Open application template</li><li>Submit to Operations</li></ul></div>' +
+    '</div>';
+  }
+
+  function staffBody(editable){
+    var lockNote = editable ? "" : ' disabled title="Read-only — not your branch"';
+    return '' +
+    '<div class="cards">' +
+      '<div class="card">' +
+        '<h4>OKR snapshot — '+state.viewBranch+'</h4>' +
+        '<span class="card-sub">Objectives: 4 active · 2 on ice</span>' +
+        '<div class="okrblock">' +
+          '<div class="pillar">Pillar 1<br><span class="pill good">on track</span></div>' +
+          '<div class="pillar">Pillar 2<br><span class="pill warn">at risk</span></div>' +
+          '<div class="pillar">Pillar 3<br><span class="pill bad">off track</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card">' +
+        '<h4>'+(state.role==="ops_manager"?"Operations checklist":"Branch health")+'</h4>' +
+        '<span class="card-sub">'+state.viewBranch+' this week</span>' +
+        '<ul><li>Weekly ops sync logged</li><li>2 tasks overdue</li><li>Slack channel active</li></ul>' +
+      '</div>' +
+    '</div>' +
+    '<div class="card" style="margin-bottom:8px;">' +
+      '<h4>Volunteers awaiting validation — '+state.viewBranch+'</h4>' +
+      '<span class="card-sub">Either Ops or the Branch Manager can sign off.</span>' +
+      '<table class="validate"><thead><tr><th>Name</th><th>Certificate</th><th></th></tr></thead><tbody>' +
+        '<tr><td>Naledi K.</td><td>Level 2 complete</td><td class="actions">' +
+          '<button class="btn"'+lockNote+'>Approve</button> <button class="btn secondary"'+lockNote+'>Hold</button></td></tr>' +
+        '<tr><td>Sam R.</td><td>Level 1 complete</td><td class="actions">' +
+          '<button class="btn"'+lockNote+'>Approve</button> <button class="btn secondary"'+lockNote+'>Hold</button></td></tr>' +
+      '</tbody></table>' +
+    '</div>';
+  }
+
+  // boot
+  paintHubGrid("hubgrid-preview", null);
+  el("buildfill").style.width = "22%";
+</script>
