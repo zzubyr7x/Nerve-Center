@@ -9,7 +9,7 @@ A Save7 chapter at one university (e.g. UCT, Stellenbosch, Wits, UP, UJ). Open-e
 _Avoid_: location, chapter, campus
 
 **National Exco**:
-Org-wide leadership seats — CEO, COO, CGO (Chief Growth Officer — field of responsibility still TBD), CFO. Full access to every hub across every branch and department. Provides overall oversight, alignment, and accountability across both the Branch and Department systems. Authors Department Head MOUs directly; reviews and signs off on Branch-Manager-authored Project Lead MOUs — routed to them by the General Liaison.
+Org-wide leadership seats — CEO, COO, CGO (Chief Growth Officer — field of responsibility still TBD), CFO. Full access to every hub across every branch and department. Provides overall oversight, alignment, and accountability across both the Branch and Department systems. Authors Department Head MOUs directly; reviews and signs off on Branch-Manager-authored Project Lead MOUs — routed to them by the General Liaison. Super Admins by default and irrevocably: the only seat that can grant or revoke Admin and Super Admin status, and the only one that can assign Exco seats, the General Liaison, and Department Heads.
 _Avoid_: leadership, management, executives, exec team, CMO (no longer an Exco seat — see Department Head)
 
 **General Liaison**:
@@ -17,8 +17,12 @@ Single org-wide seat, distinct from National Exco. The routing point between Exc
 _Avoid_: secretary general, secretary, exco liaison
 
 **Admin**:
-Master account (1-2 held) that provisions user accounts and assigns their role + branch/department. A distinct role from National Exco, even when the same person holds both.
-_Avoid_: superuser, root, master account (as a role name)
+A status layered on top of a seat, not a seat of its own — like Project Lead, nobody is *only* an Admin. Carries the admin bundle, granted all-or-nothing: provisioning user accounts, assigning seats, and managing the Branch and Department lists. Grants no hub access of its own — what an Admin can *see* comes entirely from their underlying seat. Cannot assign Exco seats, the General Liaison, or Department Heads (Exco appoints those), and cannot change their own seat or their own Admin status. Granted and revoked only by National Exco; an Admin cannot make another Admin.
+_Avoid_: master account, admin role (it is a status, not a role), superuser, root
+
+**Super Admin**:
+The higher of the two Admin tiers: the full admin bundle plus full hub access across every branch and department. National Exco hold it by default and irrevocably. The Tech Department Head holds it by seat, since maintaining the site requires seeing everything. Otherwise granted by Exco, who may hand out either tier as they see fit. Despite the name, a Super Admin still cannot grant or revoke Admin status — that stays with Exco — nor assign Exco seats, the General Liaison, or Department Heads.
+_Avoid_: superuser, root, owner
 
 **Branch Manager**:
 Runs one branch. Edit access to their own branch across hubs; read-only access to other branches. Authors MOUs (responsibilities/expectations/deliverables) for that branch's Project Leads — routed through the General Liaison for Exco review and sign-off.
@@ -35,7 +39,7 @@ A national/organisation-level portfolio for specialised work: Media, Tech, Resea
 _Avoid_: hub (a Department is an org unit; Hub is a nav section — a Department typically owns a Hub, but they aren't the same concept)
 
 **Department Head**:
-Owns, grows, and organises one Department at national scale. MOU authored directly by Exco (no Branch Manager in the loop). Gives Exco in-person or online updates at set intervals, and routes any Exco-discussion requests through the General Liaison. Becomes the national owner of the existing Hub matching their portfolio where one already exists (e.g. the Media Department Head owns the Media Hub — this absorbed the former CMO/Marketing remit, which is no longer a separate Exco seat or department).
+Owns, grows, and organises one Department at national scale. MOU authored directly by Exco (no Branch Manager in the loop). Gives Exco in-person or online updates at set intervals, and routes any Exco-discussion requests through the General Liaison. Becomes the national owner of the existing Hub matching their portfolio where one already exists (e.g. the Media Department Head owns the Media Hub — this absorbed the former CMO/Marketing remit, which is no longer a separate Exco seat or department). The Tech Department Head additionally carries Super Admin by seat.
 _Avoid_: finance manager, branch lead
 
 **Project Lead**:
