@@ -5,7 +5,7 @@ Internal ops platform for Save7, a student-run organization operating across uni
 ## Language
 
 **Branch**:
-A Save7 chapter at one university (e.g. UCT, Stellenbosch, Wits, UP, UJ). Admin-managed table, extendable as new chapters form. A branch is deactivated rather than deleted once wound down — Branch Managers, MOUs, and volunteers reference it, so its history persists.
+A Save7 chapter at one university (e.g. UCT, Stellenbosch, Wits, UP, UJ). Open-ended table managed by both Admin and National Exco — added, edited, or deleted outright. Carries a separate active/inactive status reflecting current activity/momentum, not whether it still exists — an inactive branch is still fully editable, just flagged as needing a push to get moving again.
 _Avoid_: location, chapter, campus
 
 **National Exco**:
