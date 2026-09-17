@@ -9,7 +9,7 @@ A Save7 chapter at one university (e.g. UCT, Stellenbosch, Wits, UP, UJ). Open-e
 _Avoid_: location, chapter, campus
 
 **National Exco**:
-Org-wide leadership seats — CEO, COO, CGO (Chief Growth Officer — field of responsibility still TBD), CFO. Full access to every hub across every branch and department. Provides overall oversight, alignment, and accountability across both the Branch and Department systems. Authors Department Head MOUs directly; reviews and signs off on Branch-Manager-authored Project Lead MOUs — routed to them by the General Liaison. Super Admins by default and irrevocably: the only seat that can grant or revoke Admin and Super Admin status, and the only one that can assign Exco seats, the General Liaison, and Department Heads.
+Org-wide leadership seats — CEO, COO, CGO (Chief Growth Officer — field of responsibility still TBD), CFO. Full access to every hub across every branch and department. Provides overall oversight, alignment, and accountability across both the Branch and Department systems. Authors Department Head MOUs directly; reviews and signs off on Branch-Manager-authored Project Lead MOUs — routed to them by the General Liaison. Super Admins by default and irrevocably. Exco alone assigns every seat in the organisation — Exco seats, General Liaison, Department Heads and the branch trio — grants or revokes both admin tiers, and adds branches and departments. Exco also hold every branch-level power across every branch. No one outside Exco, whatever admin tier they hold, can create or alter an Exco seat or override an Exco decision.
 _Avoid_: leadership, management, executives, exec team, CMO (no longer an Exco seat — see Department Head)
 
 **General Liaison**:
@@ -17,21 +17,25 @@ Single org-wide seat, distinct from National Exco. The routing point between Exc
 _Avoid_: secretary general, secretary, exco liaison
 
 **Admin**:
-A status layered on top of a seat, not a seat of its own — like Project Lead, nobody is *only* an Admin. Carries the admin bundle, granted all-or-nothing: provisioning user accounts, assigning seats, and managing the Branch and Department lists. Grants no hub access of its own — what an Admin can *see* comes entirely from their underlying seat. Cannot assign Exco seats, the General Liaison, or Department Heads (Exco appoints those), and cannot change their own seat or their own Admin status. Granted and revoked only by National Exco; an Admin cannot make another Admin.
+A status layered on top of a seat, not a seat of its own — like Project Lead, nobody is *only* an Admin, and a Volunteer can never hold it. Scope is account upkeep: reviewing dormant accounts, deactivating abandoned ones, general account hygiene. Grants no hub access of its own — what an Admin can *see* comes from their underlying seat, plus the Admin Dashboard. Cannot assign any seat, cannot add branches or departments, and cannot change their own seat or their own admin status. Granted and revoked only by National Exco; an Admin cannot make another Admin.
 _Avoid_: master account, admin role (it is a status, not a role), superuser, root
 
+**Admin Dashboard**:
+Where admin work is done — the landing surface for anyone holding either admin tier, Exco included. Mirrors the way a Volunteer has their own dashboard rather than hub access, rather than being a seventh thing in the hub nav. What it offers depends on the tier and the seat behind it.
+_Avoid_: admin hub, admin panel, control panel, back office
+
 **Super Admin**:
-The higher of the two Admin tiers: the full admin bundle plus full hub access across every branch and department. National Exco hold it by default and irrevocably. The Tech Department Head holds it by seat, since maintaining the site requires seeing everything. Otherwise granted by Exco, who may hand out either tier as they see fit. Despite the name, a Super Admin still cannot grant or revoke Admin status — that stays with Exco — nor assign Exco seats, the General Liaison, or Department Heads.
+The higher of the two Admin tiers: the full admin bundle plus full hub access across every branch and department. National Exco hold it by default and irrevocably. The Tech Department Head holds it by seat, since maintaining the site requires seeing everything. Otherwise granted by Exco, who may hand out either tier as they see fit. Despite the name, a Super Admin who is not Exco cannot grant or revoke either admin tier, assign any seat, add a branch or department, create or alter an Exco seat, or override an Exco decision — all of that stays with Exco. Granted in practice to seats already carrying organisation-wide responsibility, typically the General Liaison and the Tech Department Head; never to a Volunteer.
 _Avoid_: superuser, root, owner
 
 **Branch Manager**:
-Runs one branch. Edit access to their own branch across hubs; read-only access to other branches. Authors MOUs (responsibilities/expectations/deliverables) for that branch's Project Leads — routed through the General Liaison for Exco review and sign-off.
+Runs one branch. Edit access to their own branch across hubs; read-only access to other branches. Authors MOUs (responsibilities/expectations/deliverables) for that branch's Project Leads — routed through the General Liaison for Exco review and sign-off. Appointed by Exco. With the Operations Manager and Finance Manager, accepts new volunteers onto the platform and grants Project Lead status — powers that come with the seat itself, not from any admin status.
 
 **Operations Manager**:
-Runs one branch's operations team. Branch-scoped, same edit-own/read-others pattern as Branch Manager. Oversees all volunteers in the branch, all Project Leads, and new-volunteer onboarding; along with the Branch Manager and COO, funnels volunteers with a specialised interest toward the matching Department.
+Runs one branch's operations team. Branch-scoped, same edit-own/read-others pattern as Branch Manager. Appointed by Exco; shares the branch trio's power to accept volunteers onto the platform and grant Project Lead status. Oversees all volunteers in the branch, all Project Leads, and new-volunteer onboarding; along with the Branch Manager and COO, funnels volunteers with a specialised interest toward the matching Department.
 
 **Finance Manager**:
-Runs one branch's finance function. Branch-scoped, same edit-own/read-others pattern as Branch Manager and Operations Manager. Reports directly to the CFO — there is no national Finance Department standing between them.
+Runs one branch's finance function. Branch-scoped, same edit-own/read-others pattern as Branch Manager and Operations Manager. Reports directly to the CFO — there is no national Finance Department standing between them. Appointed by Exco; shares the branch trio's power to accept volunteers onto the platform and grant Project Lead status.
 _Avoid_: branch function head, finance head, department head, branch lead
 
 **Department**:
@@ -49,7 +53,7 @@ Not a distinct account type — a status/upgrade on a Volunteer, granted via a B
 An offline, signed agreement between a role and its supervising structure (Branch Manager ↔ Project Lead, Exco ↔ Department Head) setting responsibilities, expectations, deliverables, and KPIs/targets. Not a UI workflow — referenced in the OKRs hub (KPI/target display only) and uploaded to the Compliance Hub for record-keeping.
 
 **Volunteer**:
-Recruited at one branch. Has their own dashboard only — no top-nav hub access at all. Can simultaneously belong to a branch, be a member of one or more Departments, and hold Project Lead status for one or more initiatives — these are not mutually exclusive.
+Recruited at one branch. Has their own dashboard only — no top-nav hub access at all. Can simultaneously belong to a branch, be a member of one or more Departments, and hold Project Lead status for one or more initiatives — these are not mutually exclusive. Accounts are not created on the platform: a prospective volunteer signs up and qualifies at learn.save7.org, receives a Save7 email address, and is then *accepted* onto the platform by one of their branch's trio. Graduating does not end volunteering — accounts persist, and deletion is a genuine last resort rather than routine cleanup.
 
 **Hub**:
 A top-nav section of the site (OKRs, Finance, Compliance, Media, Operations, Branch Managers, Departments — the last with a sub-hub per department). A hub is hidden entirely from a role's nav if that role can't access it, rather than shown disabled.
