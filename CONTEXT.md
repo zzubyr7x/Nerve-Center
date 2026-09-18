@@ -1,8 +1,16 @@
-# Save7 Operations OS
+# Save7 OS
 
-Internal ops platform for Save7, a student-run organization operating across university branches. This glossary defines the roles, org units, and navigation concepts that gate access throughout the app.
+Internal ops platform for Save7, a student-run organisation operating across university branches. This glossary defines the roles, org units, and navigation concepts that gate access throughout the app.
 
 ## Language
+
+**Save7 OS**:
+The product — this platform, live at `os.save7.org`, commissioned by Save7's Exco from the user and Gilbert Lieb jointly. **One system, one name**, before and after the restructuring currently being designed: there is no second product, and nothing in this glossary describes a rival to it. Where a sentence needs to separate the system as it stands from the model being designed for it, that is a difference of **version, not of system** — say "Save7 OS today" and "the target model" rather than reaching for a second name.
+_Avoid_: Save7 Operations OS, Save7OS, the OS, Gilbert's system, Nerve Centre (which names the effort, not the product)
+
+**Nerve Centre**:
+The planning effort that designs Save7 OS's organisational structure, and the repo it lives in — its wayfinding map, the decision tickets under it, and the spec they become. Names **work, never software**: Nerve Centre holds no application code, and nothing a volunteer signs into is ever called this. So "the Nerve Centre role model" means the model this effort designs, while "the Save7 OS role model" means the one the product carries. Named after the retired Coda nerve-centre document that hub content is drawn from; spelled British, like the rest of this glossary.
+_Avoid_: Nerve Center, the Nerve Centre app / platform / system, a second Save7 OS
 
 **Branch**:
 A Save7 chapter at one university (e.g. UCT, Stellenbosch, Wits, UP, UJ), and the **entry point** through which a volunteer joins the organisation. A volunteer recruited at a branch works under that branch's team, and every project they take on stays under that branch trio's oversight regardless of where the project itself runs. A branch is not compulsory — a volunteer recruited outside any university has no branch (see Volunteer). Open-ended table managed by National Exco alone — added, edited, or deleted outright; no admin status confers this. Carries a separate active/inactive status reflecting current activity/momentum, not whether it still exists — an inactive branch is still fully editable, just flagged as needing a push to get moving again.
