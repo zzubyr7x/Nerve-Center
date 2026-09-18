@@ -5,7 +5,7 @@ Internal ops platform for Save7, a student-run organization operating across uni
 ## Language
 
 **Branch**:
-A Save7 chapter at one university (e.g. UCT, Stellenbosch, Wits, UP, UJ). Open-ended table managed by both Admin and National Exco — added, edited, or deleted outright. Carries a separate active/inactive status reflecting current activity/momentum, not whether it still exists — an inactive branch is still fully editable, just flagged as needing a push to get moving again.
+A Save7 chapter at one university (e.g. UCT, Stellenbosch, Wits, UP, UJ), and the **entry point** through which a volunteer joins the organisation. A volunteer recruited at a branch works under that branch's team, and every project they take on stays under that branch trio's oversight regardless of where the project itself runs. A branch is not compulsory — a volunteer recruited outside any university has no branch (see Volunteer). Open-ended table managed by National Exco alone — added, edited, or deleted outright; no admin status confers this. Carries a separate active/inactive status reflecting current activity/momentum, not whether it still exists — an inactive branch is still fully editable, just flagged as needing a push to get moving again.
 _Avoid_: location, chapter, campus
 
 **National Exco**:
@@ -13,7 +13,7 @@ Org-wide leadership seats — CEO, COO, CGO (Chief Growth Officer — field of r
 _Avoid_: leadership, management, executives, exec team, CMO (no longer an Exco seat — see Department Head)
 
 **General Liaison**:
-Single org-wide seat, distinct from National Exco. The routing point between Exco and everyone reporting up to it: Branch-Manager-authored Project Lead MOUs pass through them on the way to Exco sign-off, and Department Heads' interval updates and any Exco-discussion requests (including meeting invites) go through them too. Full hub access across every branch and department, same as National Exco, but doesn't author or sign off MOUs.
+Single org-wide seat, distinct from National Exco. The routing point between Exco and everyone reporting up to it: Branch-Manager-authored Project Lead MOUs pass through them on the way to Exco sign-off, and Department Heads' interval updates and any Exco-discussion requests (including meeting invites) go through them too. Full hub access across every branch and department, same as National Exco, but doesn't author or sign off MOUs. Owns the lifecycle of volunteers who have no branch — acceptance, dormancy, deactivation, reactivation — since there is no branch trio to hold it, with Exco as backstop, and helps a branchless volunteer with no Department author their Project Lead MOU.
 _Avoid_: secretary general, secretary, exco liaison
 
 **Admin Dashboard**:
@@ -35,21 +35,31 @@ Runs one branch's finance function. Branch-scoped, same edit-own/read-others pat
 _Avoid_: branch function head, finance head, department head, branch lead
 
 **Department**:
-A national/organisation-level portfolio for specialised work: Media, Tech, Research, Education. Open-ended, admin-managed list, extendable the same way Branch is. Distinct axis from the Branch system — operates directly under Exco, not under a Branch Manager. Finance is not a Department — see Finance Manager.
+A national/organisation-level portfolio for specialised work: Media, Tech, Research, Education. Open-ended list managed by National Exco alone, extendable the same way Branch is. A **second supervisory axis**, not a label: joining a Department places a volunteer's work in that portfolio under its Department Head, while their branch trio continues to own them as a person. Distinct axis from the Branch system — operates directly under Exco, not under a Branch Manager. A volunteer may belong to several Departments at once, one interest not excluding another; each Head's authority reaches only their own portfolio's work, so two Heads never contend over the same task. Finance is not a Department — see Finance Manager.
 _Avoid_: hub (a Department is an org unit; Hub is a nav section — a Department typically owns a Hub, but they aren't the same concept)
 
 **Department Head**:
-Owns, grows, and organises one Department at national scale. MOU authored directly by Exco (no Branch Manager in the loop). Gives Exco in-person or online updates at set intervals, and routes any Exco-discussion requests through the General Liaison. Becomes the national owner of the existing Hub matching their portfolio where one already exists (e.g. the Media Department Head owns the Media Hub — this absorbed the former CMO/Marketing remit, which is no longer a separate Exco seat or department). The Tech Department Head additionally carries Super Admin by seat.
+Owns, grows, and organises one Department at national scale. MOU authored directly by Exco (no Branch Manager in the loop). Gives Exco in-person or online updates at set intervals, and routes any Exco-discussion requests through the General Liaison. Becomes the national owner of the existing Hub matching their portfolio where one already exists (e.g. the Media Department Head owns the Media Hub — this absorbed the former CMO/Marketing remit, which is no longer a separate Exco seat or department). Holds real authority over their Department's work: sees what its members are doing, assigns it, and has a say in it; onboards them with the tools the portfolio needs, advises them, and mobilises them. That authority stops at the work — **the Department Head owns the work, the branch trio owns the person**, so acceptance onto the platform, dormancy review, deactivation and reactivation are never theirs. They may mark a member inactive *within the Department*, which is a per-Department status and touches nothing about the account. One Head per Department and one Department per Head. Where a branchless volunteer in their Department seeks Project Lead status, the Head works the MOU up with them and passes it to the General Liaison. The Tech Department Head additionally carries Super Admin by seat.
 _Avoid_: finance manager, branch lead
 
 **Project Lead**:
-Not a distinct account type — a status/upgrade on a Volunteer, granted via a Branch-Manager-authored MOU, scoped to a time-boxed initiative/project (vs. Finance Manager/Operations Manager, which are standing operational seats). Sees the volunteers working under them and their assigned tasks.
+Not a distinct account type — a status/upgrade on a Volunteer, granted via a Branch-Manager-authored MOU, scoped to a time-boxed initiative/project (vs. Finance Manager/Operations Manager, which are standing operational seats). Owns the resulting Project. Sees the volunteers working under them and their assigned tasks. Joining a Project Team confers nothing — only an accepted MOU makes a Project Lead.
+
+**Project**:
+A time-boxed initiative owned by a Project Lead, born when a volunteer's idea is written up as an MOU and signed off by Exco. Scoped either to a single branch, where only that branch's volunteers may join, or open beyond it, where the Project Lead controls which branches' volunteers — and whether branchless volunteers — may join.
+_Avoid_: programme, campaign, initiative (use for the idea before it is signed off, not the Project)
+
+**Project Team**:
+The volunteers helping on a Project, plus the Project Lead who owns it. Team members remain ordinary volunteers under their own branch trio; sitting on a team grants no status and no authority.
+_Avoid_: project members, crew, squad
 
 **MOU**:
-An offline, signed agreement between a role and its supervising structure (Branch Manager ↔ Project Lead, Exco ↔ Department Head) setting responsibilities, expectations, deliverables, and KPIs/targets. Not a UI workflow — referenced in the OKRs hub (KPI/target display only) and uploaded to the Compliance Hub for record-keeping.
+An offline, signed agreement between a role and its supervising structure (Branch Manager ↔ Project Lead, Exco ↔ Department Head) setting responsibilities, expectations, deliverables, and KPIs/targets.
+
+A Project Lead MOU is authored at the **lowest supervising level above the applicant** and routed upward through the General Liaison to Exco for sign-off; where the applicant already sits at or above a level, that level is skipped. So: a branch-onboarded volunteer's MOU is authored with their **home** Branch Manager whatever the project's reach, and Department membership does not divert it; a branchless volunteer in a Department works it up with that Department Head; a branchless volunteer in no Department works it up with the General Liaison; the General Liaison authors their own and goes straight to Exco; an Exco member authors their own and presents it to the rest of Exco. Not a UI workflow — referenced in the OKRs hub (KPI/target display only) and uploaded to the Compliance Hub for record-keeping.
 
 **Volunteer**:
-Recruited at one branch. Has their own dashboard only — no top-nav hub access at all. Can simultaneously belong to a branch, be a member of one or more Departments, and hold Project Lead status for one or more initiatives — these are not mutually exclusive. Accounts are not created on the platform: a prospective volunteer signs up and qualifies at learn.save7.org, receives a Save7 email address, and is then *accepted* onto the platform by one of their branch's trio. Graduating does not end volunteering — accounts persist, and deletion is a genuine last resort rather than routine cleanup, reserved to Exco: an account costs a completed course and a Save7 email address to obtain, so destroying one is not a branch-level act.
+Recruited at one branch, or at none. A volunteer normally enters through a branch and may transfer to another if they change university; a volunteer recruited outside any university has no branch at all — a small population in a student-driven organisation, owned by the General Liaison instead of a branch trio, and following the same paths into Departments and Projects as anyone else. Has their own dashboard only — no top-nav hub access at all. Can simultaneously belong to a branch, be a member of one or more Departments, sit on one or more Project Teams, and hold Project Lead status for one or more initiatives — these are not mutually exclusive. Accounts are not created on the platform: a prospective volunteer signs up and qualifies at learn.save7.org, receives a Save7 email address, and is then *accepted* onto the platform by one of their branch's trio. Graduating does not end volunteering — accounts persist, and deletion is a genuine last resort rather than routine cleanup, reserved to Exco: an account costs a completed course and a Save7 email address to obtain, so destroying one is not a branch-level act.
 
 **Hub**:
 A top-nav section of the site (OKRs, Finance, Compliance, Media, Operations, Branch Managers, Departments — the last with a sub-hub per department). A hub is hidden entirely from a role's nav if that role can't access it, rather than shown disabled.
