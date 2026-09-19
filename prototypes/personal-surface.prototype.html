@@ -315,8 +315,8 @@ function renderWork(){
   h += SEATS[seat].hats.map(x=>'<span class="chip">'+x+'</span>').join('');
   h += SEATS[seat].leads.map(x=>'<span class="chip lead">Project Lead — '+x+'</span>').join('');
   h += '</div>';
-  if (seat==="vol") h += '<p class="meta" style="margin-top:14px">A Volunteer has no hubs at all — '+
-       'so this page is their entire Save7 OS.'+qm(1,"Q1 — is this the same page an Exco member gets, or a lesser one?")+'</p>';
+  if (seat==="vol") h += '<p class="meta" style="margin-top:14px">A Volunteer reaches this page and the OKRs Hub — nothing else. '+
+       'So nearly everything they owe has to be doable from here.'+qm(1,"Q1 — is this the same page an Exco member gets, or a lesser one?")+'</p>';
   if (seat==="exco") h += '<p class="meta" style="margin-top:14px">Exco could act on every volunteer acceptance in the country. '+
        'None of them are here — they sit with the branch trio, who are the lowest level that can act.'+
        qm(9,"Q9 — settled: authority is not obligation. You see what is owed by you, not everything you are allowed to touch.")+'</p>';
