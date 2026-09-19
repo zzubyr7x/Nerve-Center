@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE — the personal surface (My Work / My Projects)</title>
+<style>
+  :root {
+    --pink: #ed186b; --teal: #00b9b5;
+    --ink: #141414; --paper: #faf9f7; --line: #e2ddd8; --muted: #6b6660;
+    --warn: #b8860b;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+         background:var(--paper); color:var(--ink); line-height:1.45; padding-bottom:90px; }
+  .banner { background:#2a2a2a; color:#fff; text-align:center; padding:6px; font-size:12px;
+            font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+  .wrap { max-width:940px; margin:0 auto; padding:0 20px; }
+  header.intro { padding:26px 0 10px; }
+  header.intro h1 { font-size:21px; margin:0 0 6px; font-weight:800; }
+  header.intro h1 .seven { color:var(--pink); }
+  header.intro p { color:var(--muted); margin:0 0 4px; font-size:14px; }
+
+  .seatbar { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:14px 0 6px;
+             border-bottom:1px solid var(--line); }
+  .seatbar .lbl { font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+                  color:var(--muted); margin-right:6px; font-weight:700; }
+  .seatbar button { font:inherit; font-size:13px; padding:6px 11px; border-radius:999px;
+                    border:1px solid var(--line); background:#fff; cursor:pointer; color:var(--ink); }
+  .seatbar button[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
+
+  .tabs { display:flex; gap:2px; margin:18px 0 0; }
+  .tabs button { font:inherit; font-size:14px; font-weight:600; padding:9px 16px; cursor:pointer;
+                 border:1px solid var(--line); border-bottom:none; background:#f0ece7;
+                 border-radius:9px 9px 0 0; color:var(--muted); }
+  .tabs button[aria-pressed="true"] { background:#fff; color:var(--ink); }
+
+  main { background:#fff; border:1px solid var(--line); border-radius:0 10px 10px 10px;
+         padding:22px; margin-bottom:26px; }
+
+  .hat { font-size:12px; color:var(--muted); margin:0 0 18px; }
+  .hat b { color:var(--ink); }
+
+  h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);
+       margin:26px 0 10px; font-weight:700; }
+  h2:first-of-type { margin-top:0; }
+  h2 .count { color:var(--pink); }
+
+  ul.q { list-style:none; margin:0; padding:0; }
+  ul.q li { display:flex; gap:11px; align-items:flex-start; padding:11px 2px;
+            border-bottom:1px solid #f0ece7; }
+  ul.q li:last-child { border-bottom:none; }
+  .badge { flex:none; font-size:10px; text-transform:uppercase; letter-spacing:.05em;
+           font-weight:700; padding:3px 7px; border-radius:4px; margin-top:2px; white-space:nowrap; }
+  .b-task   { background:#e6f6f5; color:#00807d; }
+  .b-action { background:#fdecf3; color:#b8145a; }
+  .b-owed   { background:#f3efe9; color:#7a6a52; }
+  .b-mou    { background:#eeeeee; color:#555; }
+  .body { flex:1; min-width:0; }
+  .body .t { font-size:14px; font-weight:600; }
+  .body .m { font-size:12.5px; color:var(--muted); }
+  .hatflag { font-size:10.5px; color:var(--muted); border:1px solid var(--line);
+             padding:1px 5px; border-radius:4px; margin-left:6px; white-space:nowrap; }
+  .due { font-size:12px; color:var(--warn); font-weight:600; white-space:nowrap; margin-top:2px; }
+  .due.late { color:#c0392b; }
+  .act { flex:none; font:inherit; font-size:12px; padding:5px 10px; border-radius:6px;
+         border:1px solid var(--line); background:#fff; cursor:pointer; margin-top:1px; }
+  .act:hover { background:#f7f4f0; }
+
+  .board { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .col { background:#f7f4f0; border-radius:8px; padding:9px; min-height:110px; }
+  .col h3 { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);
+            margin:0 0 8px; font-weight:700; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:6px; padding:7px 9px;
+          margin-bottom:6px; font-size:12.5px; }
+  .card .src { font-size:10.5px; color:var(--muted); margin-top:2px; }
+  .card.own { border-style:dashed; }
+
+  .proj { border:1px solid var(--line); border-radius:9px; padding:14px 16px; margin-bottom:12px; }
+  .proj .top { display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
+  .proj .nm { font-size:15px; font-weight:700; }
+  .proj .role { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:700; }
+  .bar { height:7px; background:#f0ece7; border-radius:4px; margin:10px 0 7px; overflow:hidden; }
+  .bar i { display:block; height:100%; background:var(--teal); }
+  .meta { font-size:12.5px; color:var(--muted); }
+  .meta b { color:var(--ink); }
+
+  .idstrip { display:flex; flex-wrap:wrap; gap:7px; margin-top:6px; }
+  .chip { font-size:12px; border:1px solid var(--line); border-radius:999px; padding:4px 10px; background:#fff; }
+  .chip.lead { border-color:var(--pink); color:var(--pink); }
+
+  .empty { font-size:13px; color:var(--muted); font-style:italic; padding:8px 2px; }
+
+  .qmark { display:inline-flex; align-items:center; justify-content:center; width:17px; height:17px;
+           border-radius:50%; background:var(--pink); color:#fff; font-size:10px; font-weight:800;
+           margin-left:7px; vertical-align:middle; cursor:help; }
+
+  .legend { border:1px dashed var(--pink); border-radius:9px; padding:14px 16px; margin-bottom:26px;
+            background:#fff; }
+  .legend h3 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--pink); }
+  .legend ol { margin:0; padding-left:20px; font-size:13px; }
+  .legend li { margin-bottom:5px; }
+  .legend .settled { border-top:1px solid var(--line); margin-top:11px; padding-top:9px;
+                     font-size:12.5px; color:var(--muted); }
+
+  .variant { position:fixed; bottom:0; left:0; right:0; background:#2a2a2a; color:#fff;
+             padding:9px 16px; display:flex; gap:9px; align-items:center; flex-wrap:wrap;
+             font-size:12.5px; z-index:50; }
+  .variant .lbl { text-transform:uppercase; letter-spacing:.05em; font-weight:700; opacity:.65; font-size:11px; }
+  .variant button { font:inherit; font-size:12.5px; padding:5px 11px; border-radius:6px;
+                    border:1px solid #555; background:#1c1c1c; color:#fff; cursor:pointer; }
+  .variant button[aria-pressed="true"] { background:var(--pink); border-color:var(--pink); }
+
+  @media (max-width:760px) {
+    .board { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">Prototype — rough sketch to react to, not a design</div>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>The personal surface — <span class="seven">My Work</span> &amp; My Projects</h1>
+    <p>Switch seats to see how one surface serves a Volunteer and an Exco member. Pink circles mark the questions still open.</p>
+  </header>
+
+  <div class="legend">
+    <h3>What's still undecided (the pink circles)</h3>
+    <ol>
+      <li><b>Q1 — One surface or two?</b> Is this same page what a Volunteer gets, or do they get a lesser one?</li>
+      <li><b>Q2 — Is "My Projects" a personal page or a whole hub?</b></li>
+      <li><b>Q4 — One merged list, or separate sections per kind?</b> Use the bottom bar to compare.</li>
+      <li><b>Q5 — Can you act here, or only look?</b> The grey buttons are the contested part.</li>
+      <li><b>Q12 — A trio's shared duty: does it show for all three, and does one of them acting clear it?</b></li>
+    </ol>
+    <div class="settled"><b>Already settled:</b> the queue is one merged list badged by origin and by hat (Q10);
+      something sits with the <i>lowest</i> person who can act, not everyone with the power (Q9);
+      the card set grows out of the hub tickets rather than being written up front (Q8).</div>
+  </div>
+
+  <div class="seatbar">
+    <span class="lbl">Signed in as</span>
+    <button data-seat="vol" aria-pressed="true">Volunteer</button>
+    <button data-seat="lead" aria-pressed="false">Project Lead</button>
+    <button data-seat="bm" aria-pressed="false">Branch Manager</button>
+    <button data-seat="fm" aria-pressed="false">Finance Manager</button>
+    <button data-seat="exco" aria-pressed="false">Exco (COO)</button>
+  </div>
+
+  <div class="tabs">
+    <button data-tab="work" aria-pressed="true">My Work</button>
+    <button data-tab="proj" aria-pressed="false">My Projects</button>
+  </div>
+
+  <main id="stage"></main>
+</div>
+
+<div class="variant">
+  <span class="lbl">Q4 —</span>
+  <button data-var="merged" aria-pressed="true">One merged list</button>
+  <button data-var="split" aria-pressed="false">Separate sections</button>
+  <span class="lbl" style="margin-left:14px">Q5 —</span>
+  <button data-var-act="on" aria-pressed="true">With inline actions</button>
+  <button data-var-act="off" aria-pressed="false">Read-only</button>
+</div>
+
+<script>
+const SEATS = {
+  vol:  { name:"Thandi Mokoena", hats:["UCT branch","Media Department"], leads:[] },
+  lead: { name:"Thandi Mokoena", hats:["UCT branch","Media Department"], leads:["Orgamites UCT"] },
+  bm:   { name:"Sipho Ndlovu",   hats:["UCT branch — Branch Manager","Research Department"], leads:[] },
+  fm:   { name:"Aisha Patel",    hats:["Stellenbosch — Finance Manager"], leads:[] },
+  exco: { name:"Lerato Dube",    hats:["National Exco — COO","Super Admin"], leads:[] }
+};
+
+// kind: task | action | owed | mou     hat: which seat the obligation arrives through
+const QUEUE = {
+  vol: [
+    {k:"task",   t:"Design the Orgamites assembly poster", m:"Orgamites UCT · Design stage", due:"Due Fri", act:"Mark done"},
+    {k:"action", t:"Send through your availability for the school visit", m:"From: UCT branch meeting, 12 Sep", due:"Overdue", late:true, act:"Reply"},
+    {k:"owed",   t:"Log your hours for last week's packing session", m:"Orgamites UCT", due:"Due Sun", act:"Log hours"},
+    {k:"owed",   t:"Upload proof of payment — printing, R240", m:"Finance are waiting on this", due:"", act:"Upload"}
+  ],
+  lead: [
+    {k:"task",   t:"Design the Orgamites assembly poster", m:"Orgamites UCT · Design stage", due:"Due Fri", act:"Mark done"},
+    {k:"action", t:"Confirm the school visit date with Rondebosch Primary", m:"From: UCT branch meeting, 12 Sep", due:"Overdue", late:true, act:"Reply"},
+    {k:"owed",   t:"Two volunteers have asked to join Orgamites UCT", m:"Waiting on you since 14 Sep", hat:"Project Lead", due:"", act:"Review"},
+    {k:"owed",   t:"Milestone “200 packs assembled” has no target date", m:"Orgamites UCT", hat:"Project Lead", due:"", act:"Set date"},
+    {k:"mou",    t:"Your Project Lead MOU — awaiting Exco sign-off", m:"Sent to the General Liaison, 8 Sep", due:"", act:null}
+  ],
+  bm: [
+    {k:"owed",   t:"3 volunteers awaiting acceptance", m:"UCT · shared with your Ops and Finance Managers", hat:"Branch Manager", due:"Oldest: 9 days", late:true, act:"Review", q12:true},
+    {k:"owed",   t:"Draft the Project Lead MOU for Thandi Mokoena", m:"Requested 8 Sep · routes to Exco via the General Liaison", hat:"Branch Manager", due:"", act:"Start"},
+    {k:"owed",   t:"2 volunteers up for dormancy review", m:"UCT · no sign-in for 60 days", hat:"Branch Manager", due:"", act:"Review", q12:true},
+    {k:"action", t:"Report UCT headcount to the COO", m:"From: national managers' meeting, 5 Sep", due:"Due Mon", act:"Reply"},
+    {k:"task",   t:"Book the venue for the UCT open day", m:"Red Cross Drive · Planning stage", due:"Due 24 Sep", act:"Mark done"}
+  ],
+  fm: [
+    {k:"owed",   t:"6 hour-claims awaiting verification", m:"Stellenbosch · oldest 11 days", hat:"Finance Manager", due:"", late:true, act:"Verify"},
+    {k:"owed",   t:"4 invoices submitted with no proof of payment", m:"Stellenbosch · R3,180 total", hat:"Finance Manager", due:"", act:"Chase"},
+    {k:"owed",   t:"Stellenbosch is at 86% of the Q3 budget", m:"R2,140 remaining", hat:"Finance Manager", due:"", act:"Open"},
+    {k:"action", t:"Send September branch spend to the CFO", m:"From: finance check-in, 2 Sep", due:"Due 30 Sep", act:"Reply"},
+    {k:"owed",   t:"1 volunteer awaiting acceptance", m:"Stellenbosch · shared with your Branch and Ops Managers", hat:"Finance Manager", due:"", act:"Review", q12:true}
+  ],
+  exco: [
+    {k:"owed",   t:"2 Project Lead MOUs awaiting your sign-off", m:"Via the General Liaison · oldest 6 days", hat:"Exco", due:"", act:"Sign"},
+    {k:"owed",   t:"Tech Department Head seat is unfilled", m:"Vacant 41 days", hat:"Exco", due:"", late:true, act:"Appoint"},
+    {k:"owed",   t:"Media Department Head update is overdue", m:"Last update 6 weeks ago · interval is monthly", hat:"Exco", due:"", late:true, act:"Chase"},
+    {k:"owed",   t:"Dialysis Drive has missed 2 milestones", m:"Wits · no check-in for 3 weeks", hat:"Exco", due:"", act:"Open"},
+    {k:"action", t:"Approve the Q4 national budget", m:"From: Exco meeting, 1 Sep", due:"Due 30 Sep", act:"Reply"}
+  ]
+};
+
+const WAITING = {
+  vol:  [{t:"Your hours for 6 Sep", m:"With your Finance Manager since 7 Sep"}],
+  lead: [{t:"Your Project Lead MOU", m:"With Exco since 8 Sep"},
+         {t:"Poster sign-off from the Media Department Head", m:"Asked 3 days ago"}],
+  bm:   [{t:"Thandi's MOU", m:"With the General Liaison since 8 Sep"}],
+  fm:   [{t:"4 invoices", m:"Chased volunteers on 15 Sep"}],
+  exco: [{t:"Tech Head nominations", m:"Asked branch managers on 2 Sep"}]
+};
+
+const UPCOMING = {
+  vol:  [{t:"Rondebosch Primary school visit", m:"26 Sep"},{t:"Orgamites packing session", m:"3 Oct"}],
+  lead: [{t:"Milestone — 200 packs assembled", m:"30 Sep"},{t:"Rondebosch Primary school visit", m:"26 Sep"}],
+  bm:   [{t:"UCT open day", m:"24 Sep"},{t:"Branch report to the COO", m:"30 Sep"}],
+  fm:   [{t:"Q3 budget closes", m:"30 Sep"},{t:"Section 18A certificate run", m:"5 Oct"}],
+  exco: [{t:"Q4 budget approval", m:"30 Sep"},{t:"National Exco meeting", m:"7 Oct"}]
+};
+
+const BOARD = {
+  vol:  [["Poster artwork","Orgamites UCT"],["Confirm availability","UCT meeting"],["Read the media brief","Personal",1],[]],
+  lead: [["Poster artwork","Orgamites UCT"],["Call Rondebosch","UCT meeting"],["Draft the run-sheet","Personal",1],["Book the van","Orgamites UCT"]],
+  bm:   [["Accept 3 volunteers","UCT"],["Thandi's MOU","UCT"],["Venue for open day","Red Cross Drive"],["Headcount to COO","Managers' meeting"]],
+  fm:   [["Verify 6 claims","Stellenbosch"],["Chase 4 invoices","Stellenbosch"],["Budget check","Personal",1],["Spend to CFO","Finance check-in"]],
+  exco: [["Sign 2 MOUs","Via Liaison"],["Tech Head shortlist","Personal",1],["Chase Media update","Departments"],["Q4 budget","Exco meeting"]]
+};
+
+const PROJECTS = {
+  vol:  [{n:"Orgamites UCT", r:"Team member", p:62, m:"3 of 5 milestones met", d:"Next: 200 packs assembled — 30 Sep", tasks:"1 task on you"}],
+  lead: [{n:"Orgamites UCT", r:"Project Lead", p:62, m:"3 of 5 milestones met", d:"Next: 200 packs assembled — 30 Sep", tasks:"4 tasks across 6 people · 1 on you", spend:"R4,120 of R7,000 drawn"}],
+  bm:   [{n:"Red Cross Drive", r:"Team member", p:41, m:"2 of 6 milestones met", d:"Next: venue confirmed — 24 Sep", tasks:"1 task on you"},
+         {n:"Orgamites UCT", r:"Your branch", p:62, m:"3 of 5 milestones met", d:"Led by Thandi Mokoena", tasks:"On track"}],
+  fm:   [{n:"Stellenbosch Dialysis Support", r:"Your branch", p:28, m:"1 of 4 milestones met", d:"Next: funder report — 12 Oct", tasks:"R3,180 unevidenced", spend:"R9,400 of R11,000 drawn"}],
+  exco: [{n:"Dialysis Drive (Wits)", r:"Off track", p:19, m:"0 of 3 milestones met", d:"No check-in for 3 weeks", tasks:"Needs attention"},
+         {n:"Orgamites UCT", r:"On track", p:62, m:"3 of 5 milestones met", d:"Led by Thandi Mokoena", tasks:"—"}]
+};
+
+const KIND = { task:["b-task","Task"], action:["b-action","Action point"], owed:["b-owed","Owed by you"], mou:["b-mou","MOU"] };
+const COLS = ["To do","Doing","Waiting","Done"];
+
+let seat="vol", tab="work", variant="merged", acts=true;
+
+function qm(n,txt){ return '<span class="qmark" title="'+txt+'">'+n+'</span>'; }
+
+function row(o){
+  const [cls,label] = KIND[o.k];
+  let h = '<li><span class="badge '+cls+'">'+label+'</span><div class="body">';
+  h += '<div class="t">'+o.t;
+  if (o.hat) h += '<span class="hatflag">as '+o.hat+'</span>';
+  if (o.q12) h += qm(12,"Q12 — this duty is shared by all three of the branch trio. Does it appear in all three queues, and does one of them acting clear it for the others?");
+  h += '</div>';
+  h += '<div class="m">'+o.m+'</div>';
+  if (o.due) h += '<div class="due'+(o.late?' late':'')+'">'+o.due+'</div>';
+  h += '</div>';
+  if (o.act && acts) h += '<button class="act">'+o.act+'</button>';
+  return h + '</li>';
+}
+
+function renderWork(){
+  const s = SEATS[seat], q = QUEUE[seat];
+  let h = '<p class="hat"><b>'+s.name+'</b> — one queue, whatever hats you wear'+
+          qm(10,"Q10 — settled: one merged queue, each row badged with the hat it arrives through.")+'</p>';
+
+  if (variant==="merged"){
+    h += '<h2>On you <span class="count">('+q.length+')</span>'+
+         qm(4,"Q4 — one merged list, or separate sections per kind? Switch at the bottom of the screen.")+
+         (acts?qm(5,"Q5 — can you act here, or only look? These buttons are the contested part."):'')+'</h2>';
+    h += '<ul class="q">'+q.map(row).join('')+'</ul>';
+  } else {
+    h += '<h2>On you — split by kind'+qm(4,"Q4 — this is the alternative: separate sections per kind.")+'</h2>';
+    ["task","action","owed","mou"].forEach(k=>{
+      const g = q.filter(o=>o.k===k);
+      if(!g.length) return;
+      h += '<h2 style="margin-top:16px">'+KIND[k][1]+'s <span class="count">('+g.length+')</span></h2>';
+      h += '<ul class="q">'+g.map(row).join('')+'</ul>';
+    });
+  }
+
+  h += '<h2>Waiting on someone else</h2><ul class="q">';
+  h += WAITING[seat].map(w=>'<li><div class="body"><div class="t">'+w.t+'</div><div class="m">'+w.m+'</div></div></li>').join('');
+  h += '</ul>';
+
+  h += '<h2>Coming up</h2><ul class="q">';
+  h += UPCOMING[seat].map(u=>'<li><div class="body"><div class="t">'+u.t+'</div><div class="m">'+u.m+'</div></div></li>').join('');
+  h += '</ul>';
+
+  h += '<h2>Your board</h2><div class="board">';
+  COLS.forEach((c,i)=>{
+    const card = BOARD[seat][i];
+    h += '<div class="col"><h3>'+c+'</h3>';
+    if (card && card.length) {
+      h += '<div class="card'+(card[2]?' own':'')+'">'+card[0]+
+           '<div class="src">'+card[1]+(card[2]?' — yours alone':'')+'</div></div>';
+    }
+    h += '</div>';
+  });
+  h += '</div>';
+  h += '<p class="meta" style="margin-top:9px">Dashed card = one you made for yourself, that nobody assigned. '+
+       'Whether your board can have your own columns is a question for the ticket.</p>';
+
+  h += '<h2>Who you are here</h2><div class="idstrip">';
+  h += SEATS[seat].hats.map(x=>'<span class="chip">'+x+'</span>').join('');
+  h += SEATS[seat].leads.map(x=>'<span class="chip lead">Project Lead — '+x+'</span>').join('');
+  h += '</div>';
+  if (seat==="vol") h += '<p class="meta" style="margin-top:14px">A Volunteer has no hubs at all — '+
+       'so this page is their entire Save7 OS.'+qm(1,"Q1 — is this the same page an Exco member gets, or a lesser one?")+'</p>';
+  if (seat==="exco") h += '<p class="meta" style="margin-top:14px">Exco could act on every volunteer acceptance in the country. '+
+       'None of them are here — they sit with the branch trio, who are the lowest level that can act.'+
+       qm(9,"Q9 — settled: authority is not obligation. You see what is owed by you, not everything you are allowed to touch.")+'</p>';
+  return h;
+}
+
+function renderProj(){
+  const list = PROJECTS[seat];
+  let h = '<p class="hat">What you lead, and what you sit on'+
+          qm(2,"Q2 — is this a personal page, or a whole hub? The org-wide view (every project Save7 runs, who is answerable, what it cost) is a different reader asking a different question.")+'</p>';
+  if(!list.length) return h+'<p class="empty">No projects yet.</p>';
+  list.forEach(p=>{
+    h += '<div class="proj"><div class="top"><span class="nm">'+p.n+'</span><span class="role">'+p.r+'</span></div>';
+    h += '<div class="bar"><i style="width:'+p.p+'%"></i></div>';
+    h += '<div class="meta"><b>'+p.m+'</b> · '+p.d+'</div>';
+    h += '<div class="meta">'+p.tasks+(p.spend?' · '+p.spend:'')+'</div></div>';
+  });
+  if (seat==="exco") h += '<p class="meta">Exco’s version shows exceptions first — what is off track — '+
+    'rather than a list of everything. A queue that cannot reach zero is decoration.</p>';
+  return h;
+}
+
+function draw(){ document.getElementById("stage").innerHTML = tab==="work" ? renderWork() : renderProj(); }
+
+document.querySelectorAll(".seatbar button").forEach(b=>b.onclick=()=>{
+  seat=b.dataset.seat;
+  document.querySelectorAll(".seatbar button").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  draw();
+});
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  tab=b.dataset.tab;
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  draw();
+});
+document.querySelectorAll("[data-var]").forEach(b=>b.onclick=()=>{
+  variant=b.dataset.var;
+  document.querySelectorAll("[data-var]").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  draw();
+});
+document.querySelectorAll("[data-var-act]").forEach(b=>b.onclick=()=>{
+  acts = b.dataset.varAct==="on";
+  document.querySelectorAll("[data-var-act]").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  draw();
+});
+draw();
+</script>
+</body>
+</html>
